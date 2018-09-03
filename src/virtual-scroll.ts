@@ -3,6 +3,7 @@ import {
 	ContentChild,
 	ElementRef,
 	EventEmitter,
+    Inject,
 	Input,
 	NgModule,
 	NgZone,
@@ -429,9 +430,14 @@ export class VirtualScrollComponent implements OnInit, OnChanges, OnDestroy {
 		this.currentTween = newTween;
 	}
 
-	constructor(protected readonly element: ElementRef, protected readonly renderer: Renderer2, protected readonly zone: NgZone) {
+	constructor(protected readonly element: ElementRef,
+				protected readonly renderer: Renderer2,
+				protected readonly zone: NgZone,
+                @Inject('virtualScroll.scrollThrottlingTime') scrollThrottlingTime,
+                @Inject('virtualScroll.scrollAnimationTime') scrollAnimationTime) {
 		this.horizontal = false;
-		this.scrollThrottlingTime = 0;
+		this.scrollThrottlingTime = scrollThrottlingTime || 0;
+		this.scrollAnimationTime = scrollAnimationTime || 750;
 		this.resetWrapGroupDimensions();
 	}
 
